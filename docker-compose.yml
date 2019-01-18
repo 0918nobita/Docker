@@ -1,0 +1,22 @@
+version: "3"
+services:
+  web:
+    image: 0918nobita/get-started:part1
+    deploy:
+      # インスタンスの個数
+      replicas: 5
+      resources:
+        limits:
+          # 最大で CPU の 10 %, メモリ 50 MB に制限
+          cpus: "0.1"
+          memory: 50M
+      restart_policy:
+        # コンテナが停止すると直ちに再起動
+        condition: on-failure
+    ports:
+      - "80:80"
+    networks: # webnet という負荷分散ネットワークを経由して 80 番ポートを共有する
+      - webnet
+networks:
+  # webnet ネットワークをデフォルトに設定
+  webnet:
